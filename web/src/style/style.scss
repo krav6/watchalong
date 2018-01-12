@@ -1,33 +1,4 @@
-$primary: #ed6a5a;
-$secondary: #58a5a5;
-$success: #7fa57a;
-$info: #d3eaea;
-$warning: #eec584;
-$danger: #d83f2b;
-$light: #fffcf2;
-$dark: #3e4345;
-
-$theme-colors: ();
-$theme-colors: map-merge((
-  "primary": $primary,
-  "secondary": $secondary,
-  "success": $success,
-  "info": $info,
-  "warning": $warning,
-  "danger": $danger,
-  "light": $light,
-  "dark": $dark
-), $theme-colors);
-
-$enable-rounded: false;
-
-$body-bg: #2b3133;
-$body-color: $light;
-
-$alert-border-width: 0;
-
-$link-hover-color: lighten($primary, 15%);
-
+@import './variables';
 @import 'bootstrap/scss/bootstrap';
 
 @each $color, $value in $theme-colors {
