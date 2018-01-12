@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import Search from './Search';
+import Search from 'components/Nav/Search';
 
 class Nav extends Component {
   state = {
