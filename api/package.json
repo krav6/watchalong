@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "0.0.0",
+  "private": true,
+  "lint-staged": {
+    "{routes,controllers}/**/*.{js,jsx,json,css}": [
+      "prettier --single-quote --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "start": "node ./bin/www",
+    "watch": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.0",
+    "morgan": "~1.9.0",
+    "prettier": "^1.10.2"
+  }
+}
