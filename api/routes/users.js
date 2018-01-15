@@ -4,7 +4,7 @@ const userController = require('../controllers/users');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resourcessss');
+  res.send('respond with a resources');
 });
 
 router.post('/login', userController.login);
