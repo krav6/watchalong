@@ -6,3 +6,7 @@
     @include alert-variant(theme-color($color), theme-color-level($color, -9), color-yiq(theme-color($color)));
   }
 }
+
+.border-none {
+  border: none;
+}

@@ -1,0 +1,33 @@
+.navbar {
+  display: grid;
+  grid-template-areas:
+    'navbar-brand navbar-toggler'
+    'navbar-search navbar-search'
+    'navbar-collapse navbar-collapse';
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto auto;
+}
+
+@media only screen and (min-width: 992px) {
+  .navbar {
+    grid-template-areas: 'navbar-brand navbar-search navbar-collapse';
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto;
+  }
+}
+
+.navbar-brand {
+  grid-area: navbar-brand;
+}
+
+.navbar-toggler {
+  grid-area: navbar-toggler;
+}
+
+.navbar-search {
+  grid-area: navbar-search;
+}
+
+.navbar-collapse {
+  grid-area: navbar-collapse;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import './Nav.css';
 import Search from 'components/Nav/Search';
 
 class Nav extends Component {
@@ -17,23 +18,21 @@ class Nav extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark app-menu">
-        <div className="col-12 col-lg d-flex justify-content-between">
-          <Link className="navbar-brand text-primary font-weight-bold" to="/">
-            WatchAlong
-          </Link>
+        <Link className="navbar-brand text-primary font-weight-bold" to="/">
+          WatchAlong
+        </Link>
 
-          <button
-            className="navbar-toggler ml-auto"
-            type="button"
-            data-toggle="collapse"
-            aria-label="Toggle navigation"
-            onClick={this.toggleMenu}
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-        </div>
+        <button
+          className="navbar-toggler ml-auto"
+          type="button"
+          data-toggle="collapse"
+          aria-label="Toggle navigation"
+          onClick={this.toggleMenu}
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
 
-        <div className="d-flex justify-content-center w-100">
+        <div className="navbar-search mx-auto">
           <Search />
         </div>
 
