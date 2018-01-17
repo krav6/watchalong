@@ -1,0 +1,22 @@
+.poster {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 150%;
+  position: relative;
+}
+
+.poster:hover .poster-text {
+  padding-bottom: 1rem;
+}
+
+.poster-text {
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  padding: 0.25rem;
+  position: absolute;
+  transition: padding 200ms ease-out;
+  width: 100%;
+}

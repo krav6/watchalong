@@ -17,8 +17,11 @@ class Nav extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark app-menu">
-        <Link className="navbar-brand text-primary font-weight-bold" to="/">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark app-menu shadow-lg">
+        <Link
+          className="navbar-brand text-primary font-weight-bold mr-5"
+          to="/"
+        >
           WatchAlong
         </Link>
 

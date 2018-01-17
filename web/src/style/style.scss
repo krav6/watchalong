@@ -7,6 +7,30 @@
   }
 }
 
+.alert {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
 .border-none {
   border: none;
+}
+
+.bg-gray {
+  background-color: #484D4E !important;
+}
+
+.hide-x {
+  overflow-x: hidden;
+}
+
+.shadow {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-lg {
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-sm {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
