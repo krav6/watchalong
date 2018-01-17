@@ -1,6 +1,6 @@
 
-exports.up = function(knex, Promise) {
-  return knex.schema.createTable('episodes', function(table) {
+exports.up = (knex, Promise) => {
+  return knex.schema.createTable('episodes', table => {
     table.increments();
     table.integer('tv_show_id').unsigned();
     table
@@ -15,6 +15,6 @@ exports.up = function(knex, Promise) {
   });
 };
 
-exports.down = function(knex, Promise) {
+exports.down = (knex, Promise) => {
   return knex.schema.dropTable('episodes');
 };
