@@ -7,11 +7,12 @@ const search = () => (
     <div className="input-group">
       <input
         type="text"
-        className="form-control w-25 bg-dark text-light border-none"
+        className="form-control w-25 bg-gray text-light border-none"
+        // style={{backgroundColor: 'rgba(255, 255, 255, 0.05)'}}
         placeholder="Search for..."
       />
       <select
-        className="custom-select bg-dark text-light border-none"
+        className="custom-select bg-gray text-light border-none"
         defaultValue="0"
       >
         <option value="0">All</option>
