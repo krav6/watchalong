@@ -14,7 +14,7 @@ const list = props => {
     const posters = props.items.map((item, idx) => {
       return (
         <div className="col-4 col-md-3 col-xl-2" key={item.id}>
-          <Poster id={item.id} title={item.title} />
+          <Poster id={item.id} title={item.title} type={props.type} />
         </div>
       );
     });
@@ -49,7 +49,8 @@ const list = props => {
 list.propTypes = {
   name: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  link: PropTypes.string.isRequired
+  link: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
 };
 
 export default list;

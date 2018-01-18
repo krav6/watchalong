@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as authActions from 'store/actions/auth';
-import Main from 'components/Main/Main';
+import Container from 'components/Container/Container';
 import AlertDanger from 'components/Alert/AlertDanger';
 
 export class Register extends Component {
@@ -41,7 +41,7 @@ export class Register extends Component {
 
   render() {
     return (
-      <Main small>
+      <Container small>
         <h1 className="mb-5">Register</h1>
         <form onSubmit={this.submitForm}>
           <div className="form-group row">
@@ -125,7 +125,7 @@ export class Register extends Component {
           </button>
           <AlertDanger message={this.props.errorMessage} />
         </form>
-      </Main>
+      </Container>
     );
   }
 }

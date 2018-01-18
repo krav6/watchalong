@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 
-import Main from 'components/Main/Main';
+import Container from 'components/Container/Container';
 import PosterList from 'components/Media/Poster/List';
 
 class Home extends Component {
   render() {
     return (
-      <Main>
+      <Container>
         <h1>Home</h1>
         <PosterList
           name="Popular"
           items={[{ id: 0, title: 'Title 1' }]}
           link="popular"
+          type="movie"
         />
         <PosterList
           name="List name with many elements"
@@ -25,9 +26,10 @@ class Home extends Component {
             { id: 6, title: 'Title 7' }
           ]}
           link="list"
+          type="tv-show"
         />
-        <PosterList name="Empty one" items={[]} link="list" />
-      </Main>
+        <PosterList name="Empty one" items={[]} link="list" type="movie" />
+      </Container>
     );
   }
 }
