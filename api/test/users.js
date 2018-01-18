@@ -54,13 +54,29 @@ describe('Users Controller', () => {
         .send({ username: 'User001', password: 'irrevelant' });
 
         expect.fail(null, null, "Should not succeed");
-      }catch({response})
-      {
+      }catch({response}){
         expect(response).to.have.status(400);
         expect(response).to.be.json;
         expect(response).to.have.property('error');
         expect(response.body).to.have.property('message');
         expect(response.body.message).to.equal("Username and password doesn't match.");
+      }
+    });
+
+    it("should respond with 400 if the user doesn't exist", async () => {
+      try {
+        await chai
+        .request(server)
+        .post('/users/login')
+        .send({ username: 'irrevelant', password: 'irrevelant'});
+
+        expect.fail(null, null, "Should not succeed");
+      } catch ({response}) {
+        expect(response).to.have.status(400);
+        expect(response).to.be.json;
+        expect(response).to.have.property('error');
+        expect(response.body).to.have.property('message');
+        expect(response.body.message).to.equal("User not found.");
       }
     });
   });
