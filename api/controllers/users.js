@@ -7,6 +7,10 @@ const saltRounds = 10;
 exports.login = async (req, res) => {
   const user = await userModel.getAll().where({ username: req.body.username });
 
+  if (user.length == 0) {
+    return res.status(400).json({ message: 'User not found.' });
+  }
+
   const isPasswordMatches = await bcrypt.compare(
     req.body.password,
     user[0].password
