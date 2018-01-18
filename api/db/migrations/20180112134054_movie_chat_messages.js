@@ -1,5 +1,5 @@
-exports.up = function(knex, Promise) {
-  return knex.schema.createTable('movie_chat_messages', function(table) {
+exports.up = (knex, Promise) => {
+  return knex.schema.createTable('movie_chat_messages', table => {
     table.increments();
     table.integer('user_id').unsigned();
     table
@@ -23,6 +23,6 @@ exports.up = function(knex, Promise) {
   });
 };
 
-exports.down = function(knex, Promise) {
+exports.down = (knex, Promise) => {
   return knex.schema.dropTable('movie_chat_messages');
 };
