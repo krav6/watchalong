@@ -6,11 +6,9 @@ import './Poster.css';
 
 const poster = props => {
   return (
-    <Link to={props.title + '/' + props.id}>
-      <div
-        className="poster bg-dark shadow-sm"
-        style={{ backgroundImage: 'url(#)' }}
-      >
+    <Link to={props.type + '/' + props.id}>
+      <div className="poster bg-dark shadow-sm">
+        <img src="poster.jpg" alt={props.title} className="poster-img" />
         <div className="poster-text text-white">{props.title}</div>
       </div>
     </Link>
@@ -19,7 +17,8 @@ const poster = props => {
 
 poster.propTypes = {
   id: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
 };
 
 export default poster;

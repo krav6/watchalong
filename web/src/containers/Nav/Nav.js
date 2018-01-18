@@ -48,12 +48,12 @@ class Nav extends Component {
         >
           <ul className="navbar-nav" onClick={this.toggleMenu}>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/movies">
+              <NavLink className="nav-link" to="/movie">
                 Movies
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/tv-shows">
+              <NavLink className="nav-link" to="/tv-show">
                 TV&nbsp;Shows
               </NavLink>
             </li>
