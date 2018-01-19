@@ -4,7 +4,7 @@ module.exports = {
     connection: {
       host: 'localhost',
       user: 'postgres',
-      password: 'watchalong',
+      password: 'asdf12',
       database: 'watchalong_test'
     },
     migrations: {
@@ -19,7 +19,7 @@ module.exports = {
     connection: {
       host: 'localhost',
       user: 'postgres',
-      password: 'watchalong',
+      password: 'asdf12',
       database: 'watchalong'
     },
     migrations: {

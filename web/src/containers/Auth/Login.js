@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import * as authActions from 'store/actions/auth';
 import Container from 'components/Container/Container';
 import AlertDanger from 'components/Alert/AlertDanger';
 
-export class Login extends Component {
+export class Login extends React.Component {
   state = {
     email: '',
     password: ''

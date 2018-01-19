@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Container from 'components/Container/Container';
 import PosterList from 'components/Media/Poster/List';
 
-class Home extends Component {
+class Home extends React.Component {
   render() {
     return (
       <Container>

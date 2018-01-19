@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
 exports.login = async (req, res) => {
-  const user = await userModel.getAll().where({ username: req.body.username });
+  const user = await userModel.getAll().where({ email: req.body.email });
 
   if (user.length == 0) {
     return res.status(400).json({ message: 'User not found.' });
@@ -19,7 +19,7 @@ exports.login = async (req, res) => {
   if (!isPasswordMatches) {
     return res
       .status(400)
-      .json({ message: "Username and password doesn't match." });
+      .json({ message: "Email and password doesn't match." });
   }
 
   const token = await jwt.sign({ id: user[0].id }, process.env.SECRET_KEY, {

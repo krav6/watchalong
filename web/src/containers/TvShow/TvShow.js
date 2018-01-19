@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import Container from 'components/Container/Container';
 
-class TvShow extends Component {
+class TvShow extends React.Component {
   render() {
     return (
       <Container>

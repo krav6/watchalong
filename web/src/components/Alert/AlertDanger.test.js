@@ -11,7 +11,7 @@ describe('<AlertDanger />', () => {
   it('should display nothing', () => {
     const message = null;
     const comp = shallow(<AlertDanger message={message} />);
-    expect(comp.find('div').isEmpty()).toBeTruthy();
+    expect(comp.find('div').exists()).toBe(false);
   });
 
   it('should display prop message', () => {

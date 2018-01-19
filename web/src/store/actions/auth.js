@@ -1,12 +1,20 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axiosWaApi';
 
-const setToken = token => ({
-  type: actionTypes.AUTH_SET_TOKEN,
-  payload: {
-    token: token
+export const setToken = token => {
+  if (token) {
+    localStorage.setItem('token', token);
+  } else {
+    localStorage.removeItem('token');
   }
-});
+
+  return {
+    type: actionTypes.AUTH_SET_TOKEN,
+    payload: {
+      token: token
+    }
+  };
+};
 
 export const setErrorMessage = errorMessage => ({
   type: actionTypes.AUTH_SET_ERROR,
@@ -20,19 +28,19 @@ export const tryLogin = (email, password) => {
     dispatch(setErrorMessage(null));
 
     try {
-      const result = await axios.post('login', {
-        email: email,
-        password: password
+      const result = await axios.post('users/login', {
+        email,
+        password
       });
       if (result.status === 200) {
         return dispatch(setToken(result.data.token));
       } else {
-        return dispatch(setErrorMessage(result.data.error));
+        return dispatch(setErrorMessage(result.data.message));
       }
     } catch (err) {
-      const errorMessage = err.response
-        ? err.response.data.error || 'A network error has occured'
-        : 'A network error has occured';
+      const errorMessage =
+        (((err || {}).response || {}).data || {}).message ||
+        'A network error has occured';
       return dispatch(setErrorMessage(errorMessage));
     }
   };
@@ -43,27 +51,21 @@ export const tryRegister = (email, username, password) => {
     dispatch(setErrorMessage(null));
 
     try {
-      const result = await axios.post('register', {
+      const result = await axios.post('users/register', {
         email: email,
         username: username,
         password: password
       });
-      if (result.status === 200) {
+      if (result.status === 201) {
         dispatch(setToken(result.data.token));
       } else {
-        return dispatch(setErrorMessage(result.data.error));
+        return dispatch(setErrorMessage(result.data.message));
       }
     } catch (err) {
-      const errorMessage = err.response
-        ? err.response.data.error || 'A network error has occured'
-        : 'A network error has occured';
+      const errorMessage =
+        (((err || {}).response || {}).data || {}).message ||
+        'A network error has occured';
       return dispatch(setErrorMessage(errorMessage));
     }
-  };
-};
-
-export const logout = () => {
-  return dispatch => {
-    dispatch(setToken(null));
   };
 };
