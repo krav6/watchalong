@@ -11,7 +11,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "start": "node ./bin/www",
-    "watch": "nodemon ./bin/www"
+    "watch": "nodemon ./bin/www",
+    "debug": "node --nolazy --inspect-brk=9229 ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -25,9 +26,12 @@
     "jsonwebtoken": "^8.1.0",
     "knex": "^0.14.2",
     "lint-staged": "^6.0.0",
+    "mockery": "^2.1.0",
     "morgan": "~1.9.0",
+    "nock": "^9.1.6",
     "pg": "^7.4.1",
-    "prettier": "^1.10.2"
+    "prettier": "^1.10.2",
+    "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",

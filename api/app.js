@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const users = require('./routes/users');
+const tvShows = require('./routes/tv-shows');
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/users', users);
+app.use('/tvshows', tvShows);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
