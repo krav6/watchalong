@@ -1,10 +1,10 @@
 import React from 'react';
 
-import App from './App';
+import Search from './Search';
 
-describe('<App />', () => {
+describe('<Search />', () => {
   it('renders without crashing', () => {
-    const comp = shallow(<App />);
+    const comp = shallow(<Search />);
     expect(comp).toBeTruthy();
   });
 });

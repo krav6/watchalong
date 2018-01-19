@@ -1,10 +1,10 @@
 import React from 'react';
 
-import App from './App';
+import Home from './Home';
 
-describe('<App />', () => {
+describe('<Home />', () => {
   it('renders without crashing', () => {
-    const comp = shallow(<App />);
+    const comp = shallow(<Home />);
     expect(comp).toBeTruthy();
   });
 });
