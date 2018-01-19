@@ -1,0 +1,21 @@
+.app {
+  display: grid;
+  grid-template-areas:
+    "menu"
+    "main"
+    "footer";
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.app-menu {
+  grid-area: menu;
+}
+
+.app-main {
+  grid-area: main;
+}
+
+.app-footer {
+  grid-area: footer;
+}
