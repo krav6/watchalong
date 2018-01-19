@@ -33,7 +33,7 @@ describe('Users Controller', () => {
       const res = await chai
         .request(server)
         .post('/users/login')
-        .send({ username: 'User001', password: 'password' });
+        .send({ email: 'user1@watchalong.com', password: 'password' });
 
         res.should.have.status(200);
         res.should.be.json;
@@ -51,7 +51,7 @@ describe('Users Controller', () => {
         await chai
         .request(server)
         .post('/users/login')
-        .send({ username: 'User001', password: 'irrevelant' });
+        .send({ email: 'user1@watchalong.com', password: 'irrevelant' });
 
         expect.fail(null, null, "Should not succeed");
       }catch({response}){
@@ -59,7 +59,7 @@ describe('Users Controller', () => {
         expect(response).to.be.json;
         expect(response).to.have.property('error');
         expect(response.body).to.have.property('message');
-        expect(response.body.message).to.equal("Username and password doesn't match.");
+        expect(response.body.message).to.equal("Email and password doesn't match.");
       }
     });
 
@@ -68,7 +68,7 @@ describe('Users Controller', () => {
         await chai
         .request(server)
         .post('/users/login')
-        .send({ username: 'irrevelant', password: 'irrevelant'});
+        .send({ email: 'irrevelant', password: 'irrevelant'});
 
         expect.fail(null, null, "Should not succeed");
       } catch ({response}) {

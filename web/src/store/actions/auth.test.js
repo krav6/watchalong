@@ -16,9 +16,34 @@ describe('auth actions', () => {
 
   afterEach(() => {
     moxios.uninstall(axios);
+    localStorage.clear();
   });
 
-  it('should set token when login successful', () => {
+  it('should set token', async () => {
+    const token = 'token';
+    const expectedActions = [
+      { type: actionTypes.AUTH_SET_TOKEN, payload: { token } }
+    ];
+
+    const store = mockStore({});
+
+    await store.dispatch(actions.setToken(token));
+    expect(store.getActions()).toEqual(expectedActions);
+    expect(localStorage.getItem('token')).toEqual(token);
+  });
+
+  it('should set error message', async () => {
+    const errorMessage = 'error';
+    const expectedActions = [
+      { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage } }
+    ];
+
+    const store = mockStore({});
+
+    await store.dispatch(actions.setErrorMessage(errorMessage));
+  });
+
+  it('should set token when login successful', async () => {
     const email = 'a@a.com';
     const password = 'password12';
     const token = 'token';
@@ -26,7 +51,7 @@ describe('auth actions', () => {
       { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
       {
         type: actionTypes.AUTH_SET_TOKEN,
-        payload: { token: token }
+        payload: { token }
       }
     ];
 
@@ -34,18 +59,19 @@ describe('auth actions', () => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: { token: 'token' }
+        response: { token }
       });
     });
 
     const store = mockStore({});
 
-    return store.dispatch(actions.tryLogin(email, password)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    await store.dispatch(actions.tryLogin(email, password));
+
+    expect(store.getActions()).toEqual(expectedActions);
+    expect(localStorage.getItem('token')).toEqual(token);
   });
 
-  it('should set error when login credentials invalid', () => {
+  it('should set error when login credentials invalid', async () => {
     const email = 'a@a.com';
     const password = 'password123';
     const errorMessage = 'Invalid login credentials';
@@ -53,23 +79,22 @@ describe('auth actions', () => {
       { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
       {
         type: actionTypes.AUTH_SET_ERROR,
-        payload: { errorMessage: errorMessage }
+        payload: { errorMessage }
       }
     ];
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
-      request.respondWith({ status: 400, response: { error: errorMessage } });
+      request.respondWith({ status: 400, response: { message: errorMessage } });
     });
 
     const store = mockStore({});
 
-    return store.dispatch(actions.tryLogin(email, password)).then(() => {
-      expect(store.getActions()).toEqual(expectedActions);
-    });
+    await store.dispatch(actions.tryLogin(email, password));
+    expect(store.getActions()).toEqual(expectedActions);
   });
 
-  it('should set token when registration successful', () => {
+  it('should set token when registration successful', async () => {
     const email = 'a@a.com';
     const username = 'asdf';
     const password = 'password12';
@@ -78,25 +103,23 @@ describe('auth actions', () => {
       { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
       {
         type: actionTypes.AUTH_SET_TOKEN,
-        payload: { token: token }
+        payload: { token }
       }
     ];
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
-      request.respondWith({ status: 200, response: { token: 'token' } });
+      request.respondWith({ status: 201, response: { token } });
     });
 
     const store = mockStore({});
 
-    return store
-      .dispatch(actions.tryRegister(email, username, password))
-      .then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    await store.dispatch(actions.tryRegister(email, username, password));
+    expect(store.getActions()).toEqual(expectedActions);
+    expect(localStorage.getItem('token')).toEqual(token);
   });
 
-  it('should set error message when registration failed', () => {
+  it('should set error message when registration failed', async () => {
     const email = 'a@a.com';
     const username = 'asdf';
     const password = 'password12';
@@ -105,21 +128,18 @@ describe('auth actions', () => {
       { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
       {
         type: actionTypes.AUTH_SET_ERROR,
-        payload: { errorMessage: errorMessage }
+        payload: { errorMessage }
       }
     ];
 
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
-      request.respondWith({ status: 400, response: { error: errorMessage } });
+      request.respondWith({ status: 400, response: { message: errorMessage } });
     });
 
     const store = mockStore({});
 
-    return store
-      .dispatch(actions.tryRegister(email, username, password))
-      .then(() => {
-        expect(store.getActions()).toEqual(expectedActions);
-      });
+    await store.dispatch(actions.tryRegister(email, username, password));
+    expect(store.getActions()).toEqual(expectedActions);
   });
 });
