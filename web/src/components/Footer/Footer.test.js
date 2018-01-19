@@ -1,10 +1,10 @@
 import React from 'react';
 
-import App from './App';
+import Footer from './Footer';
 
-describe('<App />', () => {
+describe('<Footer />', () => {
   it('renders without crashing', () => {
-    const comp = shallow(<App />);
+    const comp = shallow(<Footer />);
     expect(comp).toBeTruthy();
   });
 });

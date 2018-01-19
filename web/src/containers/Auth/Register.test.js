@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { Register } from './Register';
 
@@ -48,13 +47,35 @@ describe('<Register />', () => {
     comp
       .find('input[name="password"]')
       .simulate('change', { target: { name: 'password', value: password } });
-    comp
-      .find('input[name="passwordConfirm"]')
-      .simulate('change', {
-        target: { name: 'passwordConfirm', value: password }
-      });
+    comp.find('input[name="passwordConfirm"]').simulate('change', {
+      target: { name: 'passwordConfirm', value: password }
+    });
     comp.find('form').simulate('submit', { preventDefault: () => true });
 
     expect(tryRegister).toHaveBeenCalledWith(email, username, password);
+  });
+
+  it('should clear errorMessage when unmounting', () => {
+    const errorMessage = 'Error';
+    const setErrorMessage = jest.fn();
+    const comp = shallow(
+      <Register errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+    );
+
+    expect(comp).toBeTruthy();
+    comp.unmount();
+    expect(setErrorMessage).toHaveBeenCalled();
+  });
+
+  it('should not try to clear errorMessage when unmounting if it is not set', () => {
+    const errorMessage = undefined;
+    const setErrorMessage = jest.fn();
+    const comp = shallow(
+      <Register errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+    );
+
+    expect(comp).toBeTruthy();
+    comp.unmount();
+    expect(setErrorMessage).toHaveBeenCalledTimes(0);
   });
 });

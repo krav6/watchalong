@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { Login } from './Login';
 
@@ -23,5 +22,29 @@ describe('<Login />', () => {
     comp.find('form').simulate('submit', { preventDefault: () => true });
 
     expect(tryLogin).toHaveBeenCalledWith(email, password);
+  });
+
+  it('should clear errorMessage when unmounting', () => {
+    const errorMessage = 'Error';
+    const setErrorMessage = jest.fn();
+    const comp = shallow(
+      <Login errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+    );
+
+    expect(comp).toBeTruthy();
+    comp.unmount();
+    expect(setErrorMessage).toHaveBeenCalled();
+  });
+
+  it('should not try to clear errorMessage when unmounting if it is not set', () => {
+    const errorMessage = undefined;
+    const setErrorMessage = jest.fn();
+    const comp = shallow(
+      <Login errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+    );
+
+    expect(comp).toBeTruthy();
+    comp.unmount();
+    expect(setErrorMessage).toHaveBeenCalledTimes(0);
   });
 });

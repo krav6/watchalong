@@ -8,7 +8,6 @@ const search = () => (
       <input
         type="text"
         className="form-control w-25 bg-gray text-light border-none"
-        // style={{backgroundColor: 'rgba(255, 255, 255, 0.05)'}}
         placeholder="Search for..."
       />
       <select

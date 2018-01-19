@@ -4,56 +4,33 @@ import { connect } from 'react-redux';
 
 import './Nav.css';
 import Search from 'components/Nav/Search';
+import NavItem from 'components/Nav/NavItem';
 
-class Nav extends React.Component {
+export class Nav extends React.Component {
   state = {
-    isMenuActive: false
+    isMenuShown: false
   };
 
   toggleMenu = () => {
     this.setState(prevState => ({
-      isMenuActive: !prevState.isMenuActive
+      isMenuShown: !prevState.isMenuShown
     }));
   };
 
   render() {
     const menuItems = [
-      <li className="nav-item" key="0">
-        <NavLink className="nav-link" to="/movie">
-          Movies
-        </NavLink>
-      </li>,
-      <li className="nav-item" key="1">
-        <NavLink className="nav-link" to="/tv-show">
-          TV Shows
-        </NavLink>
-      </li>
+      { text: 'Movies', to: '/movie' },
+      { text: 'TV Shows', to: '/tv-show' }
     ];
     if (this.props.authenticated) {
       menuItems.push(
-        <li className="nav-item" key="2">
-          <NavLink className="nav-link" to="/profile">
-            Profile
-          </NavLink>
-        </li>,
-        <li className="nav-item" key="3">
-          <NavLink className="nav-link text-secondary" to="/logout">
-            Logout
-          </NavLink>
-        </li>
+        { text: 'Profile', to: '/profile' },
+        { text: 'Logout', to: '/logout', color: 'secondary' }
       );
     } else {
       menuItems.push(
-        <li className="nav-item" key="2">
-          <NavLink className="nav-link text-secondary" to="/login">
-            Login
-          </NavLink>
-        </li>,
-        <li className="nav-item" key="3">
-          <NavLink className="nav-link text-primary" to="/register">
-            Register
-          </NavLink>
-        </li>
+        { text: 'Login', to: '/login', color: 'secondary' },
+        { text: 'Register', to: '/register', color: 'primary' }
       );
     }
 
@@ -82,13 +59,22 @@ class Nav extends React.Component {
 
         <div
           className={
-            this.state.isMenuActive
+            this.state.isMenuShown
               ? 'navbar-collapse justify-content-end'
               : 'navbar-collapse justify-content-end collapse'
           }
         >
           <ul className="navbar-nav" onClick={this.toggleMenu}>
-            {menuItems}
+            {menuItems.map((val, idx) => {
+              return (
+                <NavItem
+                  text={val.text}
+                  to={val.to}
+                  color={val.color}
+                  key={idx}
+                />
+              );
+            })}
           </ul>
         </div>
       </nav>
