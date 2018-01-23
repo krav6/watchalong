@@ -29,19 +29,28 @@ const getToken = () => {
   return token;
 };
 
-const sendRequest = async dest => {
+const sendRequest = async (dest, query) => {
   try {
     const bearerToken = await getToken();
-    return await request({
+
+    const requestData = {
       method: 'GET',
       uri: `${baseUrl}${dest}`,
       headers: { Authorization: `Bearer ${bearerToken}` }
-    });
+    };
+
+    if (typeof query != 'undefined') {
+      Object.assign(requestData, {
+        qs: query
+      });
+    }
+
+    return await request(requestData);
   } catch (error) {
     if (error.statusCode === 401 && !loginGuard) {
       loginGuard = true;
       await login();
-      return sendRequest(dest);
+      return sendRequest(dest, query);
     } else {
       loginGuard = false;
       return Promise.reject(error);
@@ -51,4 +60,16 @@ const sendRequest = async dest => {
 
 exports.getSeriesById = id => {
   return sendRequest(`series/${id}`);
+};
+
+exports.getEpisodeById = id => {
+  return sendRequest(`episode/${id}`);
+};
+
+exports.getEpisodesBySeries = id => {
+  return sendRequest(`series/${id}/episodes`);
+};
+
+exports.searchSeries = query => {
+  return sendRequest(`search/series`, query);
 };
