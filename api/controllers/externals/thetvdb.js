@@ -73,3 +73,19 @@ exports.getEpisodesBySeries = id => {
 exports.searchSeries = query => {
   return sendRequest(`search/series`, query);
 };
+
+exports.getSeriesImagesById = id => {
+  return sendRequest(`series/${id}/images`);
+};
+
+const querySeriesImages = (id, keyType) => {
+  return sendRequest(`series/${id}/images/query`, { keyType });
+};
+
+exports.getSeriesPostersById = id => {
+  return querySeriesImages(id, 'poster');
+};
+
+exports.getSeriesSeasonPostersById = id => {
+  return querySeriesImages(id, 'season');
+};
