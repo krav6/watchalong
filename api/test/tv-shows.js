@@ -187,12 +187,12 @@ describe('TV Shows Controller', () => {
         .reply(200, { token: 'token' });
 
       nock('https://api.thetvdb.com')
-        .get('/series/266/episode')
+        .get('/series/266/episodes')
         .reply(404);
 
       chai
         .request(server)
-        .get('/tvshows/thetvdb/series/266/episode')
+        .get('/tvshows/thetvdb/series/266/episodes')
         .end((err, res) => {
           res.should.have.status(503);
           done();
