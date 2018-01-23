@@ -180,8 +180,8 @@ describe('TV Shows Controller', () => {
     });
   });
 
-  describe('series/:id/episode', () => {
-    it('should respond with 503 when the series/:id/episode request fails', done => {
+  describe('series/:id/episodes', () => {
+    it('should respond with 503 when the series/:id/episodes request fails', done => {
       nock('https://api.thetvdb.com')
         .post('/login')
         .reply(200, { token: 'token' });
@@ -199,7 +199,7 @@ describe('TV Shows Controller', () => {
         });
     });
 
-    it('should respond with series data when the series/:id/episode request is successful', done => {
+    it('should respond with series data when the series/:id/episodes request is successful', done => {
       nock('https://api.thetvdb.com')
         .post('/login')
         .reply(200, { token: 'token' });
@@ -217,6 +217,127 @@ describe('TV Shows Controller', () => {
           const body = JSON.parse(res.body);
           expect(body).to.have.property('episodeName');
           expect(body.episodeName).to.equal('Remember Budapest');
+          done();
+        });
+    });
+  });
+
+  describe('series/:id/images', () => {
+    it('should respond with 503 when the series/:id/images request fails', done => {
+      nock('https://api.thetvdb.com')
+        .post('/login')
+        .reply(200, { token: 'token' });
+
+      nock('https://api.thetvdb.com')
+        .get('/series/266/images')
+        .reply(404);
+
+      chai
+        .request(server)
+        .get('/tvshows/thetvdb/series/266/images')
+        .end((err, res) => {
+          res.should.have.status(503);
+          done();
+        });
+    });
+
+    it('should respond with series data when the series/:id/images request is successful', done => {
+      nock('https://api.thetvdb.com')
+        .post('/login')
+        .reply(200, { token: 'token' });
+
+      nock('https://api.thetvdb.com')
+        .get('/series/266/images')
+        .reply(200);
+
+      chai
+        .request(server)
+        .get('/tvshows/thetvdb/series/266/images')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.json;
+          done();
+        });
+    });
+  });
+
+  describe('series/:id/posters', () => {
+    it('should respond with 503 when the series/:id/posters request fails', done => {
+      nock('https://api.thetvdb.com')
+        .post('/login')
+        .reply(200, { token: 'token' });
+
+      nock('https://api.thetvdb.com')
+        .get('/series/266/images/query')
+        .query({ keyType: 'poster' })
+        .reply(404);
+
+      chai
+        .request(server)
+        .get('/tvshows/thetvdb/series/266/posters')
+        .end((err, res) => {
+          res.should.have.status(503);
+          done();
+        });
+    });
+
+    it('should respond with series data when the series/:id/posters request is successful', done => {
+      nock('https://api.thetvdb.com')
+        .post('/login')
+        .reply(200, { token: 'token' });
+
+      nock('https://api.thetvdb.com')
+        .get('/series/266/images/query')
+        .query({keyType: 'poster'})
+        .reply(200);
+
+      chai
+        .request(server)
+        .get('/tvshows/thetvdb/series/266/posters')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.json;
+          done();
+        });
+    });
+  });
+
+  describe('series/:id/seasonposters', () => {
+    it('should respond with 503 when the series/:id/seasonposters request fails', done => {
+      nock('https://api.thetvdb.com')
+        .post('/login')
+        .reply(200, { token: 'token' });
+
+      nock('https://api.thetvdb.com')
+        .get('/series/266/images/query')
+        .query({ keyType: 'season' })
+        .reply(404);
+
+      chai
+        .request(server)
+        .get('/tvshows/thetvdb/series/266/seasonposters')
+        .end((err, res) => {
+          res.should.have.status(503);
+          done();
+        });
+    });
+
+    it('should respond with series data when the series/:id/seasonposters request is successful', done => {
+      nock('https://api.thetvdb.com')
+        .post('/login')
+        .reply(200, { token: 'token' });
+
+      nock('https://api.thetvdb.com')
+        .get('/series/266/images/query')
+        .query({ keyType: 'season' })
+        .reply(200);
+
+      chai
+        .request(server)
+        .get('/tvshows/thetvdb/series/266/seasonposters')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.should.be.json;
           done();
         });
     });

@@ -36,3 +36,32 @@ exports.searchSeriesFromTvDb = async (req, res) => {
     res.sendStatus(503);
   }
 };
+
+exports.getSeriesImagesByIdFromTvDb = async (req, res) => {
+  try {
+    const result = await thetvdbController.getSeriesImagesById(req.params.id);
+    return res.status(200).json(result);
+  } catch (error) {
+    res.sendStatus(503);
+  }
+};
+
+exports.getSeriesPostersByIdFromTvDb = async (req, res) => {
+  try {
+    const result = await thetvdbController.getSeriesPostersById(req.params.id);
+    return res.status(200).json(result);
+  } catch (error) {
+    res.sendStatus(503);
+  }
+};
+
+exports.getSeriesSeasonPostersByIdFromTvDb = async (req, res) => {
+  try {
+    const result = await thetvdbController.getSeriesSeasonPostersById(
+      req.params.id
+    );
+    return res.status(200).json(result);
+  } catch (error) {
+    res.sendStatus(503);
+  }
+};
