@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const tvshowsController = require('../controllers/tv-shows');
 
-router.get('/thetvdb/series', tvshowsController.getSeriesByIdFromTvDb);
+router.get('/thetvdb/series/:id', tvshowsController.getSeriesByIdFromTvDb);
 router.get('/thetvdb/episode', tvshowsController.getEpisodeByIdFromTvDb);
 router.get(
   '/thetvdb/series/:id/episodes',
@@ -22,5 +22,7 @@ router.get(
   '/thetvdb/series/:id/seasonposters',
   tvshowsController.getSeriesSeasonPostersByIdFromTvDb
 );
+
+router.post('/series/insert/', tvshowsController.insertSeriesById);
 
 module.exports = router;

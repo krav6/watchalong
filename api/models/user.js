@@ -1,10 +1,8 @@
 const knex = require('../db/knex');
 
-function users() {
+const users = () => {
   return knex('users');
 }
-
-// *** queries *** //
 
 const getAll = () => {
   return users().select();
