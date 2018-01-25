@@ -5,15 +5,20 @@ const should = chai.should();
 const chaiHttp = require('chai-http');
 const server = require('../app');
 const knex = require('../db/knex');
-const userModel = require('../models/user');
+const thetvdbController = require('../controllers/externals/thetvdb');
+const tvShowModel = require('../models/tv-show');
+const episodeModel = require('../models/episode');
 const expect = chai.expect;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const nock = require('nock');
+const sinon = require('sinon');
+let sandbox;
 
 chai.use(chaiHttp);
 
 describe('TV Shows Controller', () => {
+  sandbox = sinon.sandbox.create();
   if (!nock.isActive()) nock.activate();
   beforeEach(done => {
     knex.migrate.rollback().then(() => {
@@ -26,6 +31,8 @@ describe('TV Shows Controller', () => {
   });
 
   afterEach(done => {
+    sandbox.restore();
+
     nock.cleanAll();
 
     knex.migrate.rollback().then(() => {
@@ -40,8 +47,8 @@ describe('TV Shows Controller', () => {
 
       chai
         .request(server)
-        .get('/tvshows/thetvdb/series')
-        .send({ series_id: 'something' })
+        .get('/tvshows/thetvdb/series/1')
+        .send()
         .end((err, res) => {
           res.should.have.status(503);
           done();
@@ -55,13 +62,12 @@ describe('TV Shows Controller', () => {
         .reply(200, { token: 'token' });
 
       nock('https://api.thetvdb.com')
-        .get('/series/something')
+        .get('/series/1')
         .reply(404);
 
       chai
         .request(server)
-        .get('/tvshows/thetvdb/series')
-        .query({ id: 'something' })
+        .get('/tvshows/thetvdb/series/1')
         .end((err, res) => {
           res.should.have.status(503);
           done();
@@ -74,19 +80,17 @@ describe('TV Shows Controller', () => {
         .reply(200, { token: 'token' });
 
       nock('https://api.thetvdb.com')
-        .get('/series/something')
+        .get('/series/1')
         .reply(200, { seriesName: 'Vikings' });
 
       chai
         .request(server)
-        .get('/tvshows/thetvdb/series')
-        .query({ id: 'something' })
+        .get('/tvshows/thetvdb/series/1')
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          const body = JSON.parse(res.body);
-          expect(body).to.have.property('seriesName');
-          expect(body.seriesName).to.equal('Vikings');
+          expect(res.body).to.have.property('seriesName');
+          expect(res.body.seriesName).to.equal('Vikings');
           done();
         });
     });
@@ -127,9 +131,8 @@ describe('TV Shows Controller', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          const body = JSON.parse(res.body);
-          expect(body).to.have.property('episodeName');
-          expect(body.episodeName).to.equal('Remember Budapest');
+          expect(res.body).to.have.property('episodeName');
+          expect(res.body.episodeName).to.equal('Remember Budapest');
           done();
         });
     });
@@ -172,9 +175,8 @@ describe('TV Shows Controller', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          const body = JSON.parse(res.body);
-          expect(body).to.have.property('series');
-          expect(body.series).to.equal('Vikings');
+          expect(res.body).to.have.property('series');
+          expect(res.body.series).to.equal('Vikings');
           done();
         });
     });
@@ -214,9 +216,8 @@ describe('TV Shows Controller', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.should.be.json;
-          const body = JSON.parse(res.body);
-          expect(body).to.have.property('episodeName');
-          expect(body.episodeName).to.equal('Remember Budapest');
+          expect(res.body).to.have.property('episodeName');
+          expect(res.body.episodeName).to.equal('Remember Budapest');
           done();
         });
     });
@@ -248,7 +249,7 @@ describe('TV Shows Controller', () => {
 
       nock('https://api.thetvdb.com')
         .get('/series/266/images')
-        .reply(200);
+        .reply(200, {});
 
       chai
         .request(server)
@@ -288,8 +289,8 @@ describe('TV Shows Controller', () => {
 
       nock('https://api.thetvdb.com')
         .get('/series/266/images/query')
-        .query({keyType: 'poster'})
-        .reply(200);
+        .query({ keyType: 'poster' })
+        .reply(200, {});
 
       chai
         .request(server)
@@ -330,7 +331,7 @@ describe('TV Shows Controller', () => {
       nock('https://api.thetvdb.com')
         .get('/series/266/images/query')
         .query({ keyType: 'season' })
-        .reply(200);
+        .reply(200, {});
 
       chai
         .request(server)
@@ -340,6 +341,137 @@ describe('TV Shows Controller', () => {
           res.should.be.json;
           done();
         });
+    });
+  });
+
+  describe('series/insert', () => {
+    it('should respond with 503 if the series is already stored', async () => {
+      const seriesId = 1;
+
+      try {
+        await chai
+          .request(server)
+          .post('/tvshows/series/insert')
+          .send({ id: seriesId });
+
+        expect.fail(null, null, 'Should not succeed');
+      } catch ({ response }) {
+        expect(response).to.have.status(503);
+        expect(response).to.be.json;
+        expect(response).to.have.property('error');
+        expect(response.body).to.have.property('message');
+        expect(response.body.message).to.equal(
+          `Series with the id of ${seriesId} is already stored in the databese.`
+        );
+      }
+    });
+
+    it('should respond with 503 if could not get the parsed series', async () => {
+      const seriesId = 2;
+      sandbox
+        .stub(thetvdbController, 'getSeriesById')
+        .withArgs(seriesId)
+        .rejects();
+      try {
+        await chai
+          .request(server)
+          .post('/tvshows/series/insert')
+          .send({ id: seriesId });
+
+        expect.fail(null, null, 'Should not succeed');
+      } catch ({ response }) {
+        expect(response).to.have.status(503);
+      }
+    });
+
+    it('should respond with 503 if could not get the parsed episodes', async () => {
+      const seriesId = 2;
+      sandbox
+        .stub(thetvdbController, 'getSeriesById')
+        .withArgs(seriesId)
+        .returns('{}');
+      sandbox
+        .stub(thetvdbController, 'getEpisodesBySeries')
+        .withArgs(seriesId)
+        .rejects();
+      try {
+        await chai
+          .request(server)
+          .post('/tvshows/series/insert')
+          .send({ id: seriesId });
+
+        expect.fail(null, null, 'Should not succeed');
+      } catch ({ response }) {
+        expect(response).to.have.status(503);
+      }
+    });
+
+    it('should respond with 201 and show id with inserted series and episodes with correct data', async () => {
+      const seriesId = 2;
+      const series = {
+        data: {
+          seriesName: 'TestSeries',
+          firstAired: '2017-03-22',
+          overview: 'This is an overview',
+          runtime: 99
+        }
+      };
+
+      const episodes = {
+        data: [
+          {
+            airedSeason: 1,
+            airedEpisodeNumber: 1,
+            episodeName: 'Remember Budapest',
+            firstAired: '2017-03-22',
+            overview: 'Another overview'
+          },
+          {
+            airedSeason: 1,
+            airedEpisodeNumber: 2,
+            episodeName: 'Remember Budapest2',
+            firstAired: '2017-03-23',
+            overview: 'Another overview2'
+          }
+        ]
+      };
+
+      sandbox
+        .stub(thetvdbController, 'getSeriesById')
+        .withArgs(seriesId)
+        .returns(JSON.stringify(series));
+      sandbox
+        .stub(thetvdbController, 'getEpisodesBySeries')
+        .withArgs(seriesId)
+        .returns(JSON.stringify(episodes));
+
+      const res = await chai
+        .request(server)
+        .post('/tvshows/series/insert')
+        .send({ id: seriesId });
+
+      res.should.have.status(201);
+      res.should.be.json;
+
+      const shows = await tvShowModel.getAll().where({ thetvdb_id: seriesId });
+      expect(shows.length).to.equal(1);
+
+      res.body.should.have.property('showId');
+      res.body.showId.should.equal(shows[0].id);
+
+      const firstEpisode = await episodeModel.exists(
+        shows[0].id,
+        episodes.data[0].airedSeason,
+        episodes.data[0].airedEpisodeNumber
+      );
+
+      const secondEpisode = await episodeModel.exists(
+        shows[0].id,
+        episodes.data[1].airedSeason,
+        episodes.data[1].airedEpisodeNumber
+      );
+
+      expect(firstEpisode && secondEpisode).to.be.true;
     });
   });
 });
