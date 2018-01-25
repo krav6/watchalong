@@ -7,11 +7,12 @@ exports.up = (knex, Promise) => {
       .foreign('tv_show_id')
       .references('id')
       .inTable('tv_shows');
+      table.integer('season_number').notNullable();
     table.integer('episode_number').notNullable();
+    table.unique(['tv_show_id', 'season_number', 'episode_number']);
     table.string('title').notNullable();
-    table.date('air_date');
     table.string('summary', 1000);
-    table.integer('season_number').notNullable();
+    table.date('air_date');
   });
 };
 

@@ -18,6 +18,7 @@ exports.up = (knex, Promise) => {
       .defaultTo(knex.fn.now());
     table
       .integer('score')
+      .unsigned()
       .notNullable()
       .defaultTo(0);
   });
