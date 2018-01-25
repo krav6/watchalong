@@ -9,9 +9,11 @@ import './style/style.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import authReducer from './store/reducers/auth';
+import chatReducer from './store/reducers/chat';
 
 const rootReducer = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  chat: chatReducer
 });
 
 const composeEnhancers =

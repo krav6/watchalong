@@ -1,5 +1,6 @@
 @import './variables';
 @import 'bootstrap/scss/bootstrap';
+@import './range';
 
 @each $color, $value in $theme-colors {
   .alert-#{$color} {
@@ -33,4 +34,8 @@
 
 .shadow-sm {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+input:invalid {
+  box-shadow: none;
 }
