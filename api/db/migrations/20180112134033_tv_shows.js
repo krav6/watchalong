@@ -7,14 +7,14 @@ exports.up = (knex, Promise) => {
       .unique();
     table.string('imdb_id').unique();
     table.string('title').notNullable();
-    table.date('release_date').notNullable();
     table.string('summary', 1000);
     table
-      .integer('runtime')
+      .integer('number_of_seasons')
       .notNullable()
       .defaultTo(0);
+    table.date('release_date').notNullable();
     table
-      .integer('number_of_seasons')
+      .integer('runtime')
       .notNullable()
       .defaultTo(0);
   });

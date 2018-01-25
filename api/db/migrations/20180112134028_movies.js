@@ -7,8 +7,8 @@ exports.up = (knex, Promise) => {
       .unique();
     table.string('imdb_id').unique();
     table.string('title').notNullable();
-    table.date('release_date').notNullable();
     table.string('summary');
+    table.date('release_date').notNullable();
     table.integer('runtime').notNullable().defaultTo(0);
   });
 };
