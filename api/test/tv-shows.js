@@ -9,18 +9,17 @@ const thetvdbController = require('../controllers/externals/thetvdb');
 const tvShowModel = require('../models/tv-show');
 const episodeModel = require('../models/episode');
 const expect = chai.expect;
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const nock = require('nock');
 const sinon = require('sinon');
+const thetvdbApiUrl = 'https://api.thetvdb.com';
 let sandbox;
 
 chai.use(chaiHttp);
 
-describe('TV Shows Controller', () => {
-  sandbox = sinon.sandbox.create();
-  if (!nock.isActive()) nock.activate();
+describe('TV Shows', () => {
   beforeEach(done => {
+    sandbox = sinon.sandbox.create();
+    if (!nock.isActive()) nock.activate();
     knex.migrate.rollback().then(() => {
       knex.migrate.latest().then(() => {
         return knex.seed.run().then(() => {
@@ -41,14 +40,13 @@ describe('TV Shows Controller', () => {
   });
   describe('login', () => {
     it('should respond with 503 when the login request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(404);
 
       chai
         .request(server)
         .get('/tvshows/thetvdb/series/1')
-        .send()
         .end((err, res) => {
           res.should.have.status(503);
           done();
@@ -57,11 +55,11 @@ describe('TV Shows Controller', () => {
   });
   describe('series', () => {
     it('should respond with 503 when the series request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/1')
         .reply(404);
 
@@ -75,11 +73,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with the series data when the series request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/1')
         .reply(200, { seriesName: 'Vikings' });
 
@@ -97,11 +95,11 @@ describe('TV Shows Controller', () => {
   });
   describe('episode', () => {
     it('should respond with 503 when the episode request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/episode/something')
         .reply(404);
 
@@ -116,11 +114,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with the episode data when the episode request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/episode/something')
         .reply(200, { episodeName: 'Remember Budapest' });
 
@@ -139,11 +137,11 @@ describe('TV Shows Controller', () => {
   });
   describe('search/series', () => {
     it('should respond with 503 when the search/series request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/search/series')
         .query({ name: 'Vikings' })
         .reply(404);
@@ -159,11 +157,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with series data when the search series request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/search/series')
         .query({ name: 'Vikings' })
         .reply(200, { series: 'Vikings' });
@@ -184,11 +182,11 @@ describe('TV Shows Controller', () => {
 
   describe('series/:id/episodes', () => {
     it('should respond with 503 when the series/:id/episodes request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/episodes')
         .reply(404);
 
@@ -202,11 +200,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with series data when the series/:id/episodes request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/episodes')
         .reply(200, { episodeName: 'Remember Budapest' });
 
@@ -225,11 +223,11 @@ describe('TV Shows Controller', () => {
 
   describe('series/:id/images', () => {
     it('should respond with 503 when the series/:id/images request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/images')
         .reply(404);
 
@@ -243,11 +241,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with series data when the series/:id/images request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/images')
         .reply(200, {});
 
@@ -264,11 +262,11 @@ describe('TV Shows Controller', () => {
 
   describe('series/:id/posters', () => {
     it('should respond with 503 when the series/:id/posters request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/images/query')
         .query({ keyType: 'poster' })
         .reply(404);
@@ -283,11 +281,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with series data when the series/:id/posters request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/images/query')
         .query({ keyType: 'poster' })
         .reply(200, {});
@@ -305,11 +303,11 @@ describe('TV Shows Controller', () => {
 
   describe('series/:id/seasonposters', () => {
     it('should respond with 503 when the series/:id/seasonposters request fails', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/images/query')
         .query({ keyType: 'season' })
         .reply(404);
@@ -324,11 +322,11 @@ describe('TV Shows Controller', () => {
     });
 
     it('should respond with series data when the series/:id/seasonposters request is successful', done => {
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .post('/login')
         .reply(200, { token: 'token' });
 
-      nock('https://api.thetvdb.com')
+      nock(thetvdbApiUrl)
         .get('/series/266/images/query')
         .query({ keyType: 'season' })
         .reply(200, {});

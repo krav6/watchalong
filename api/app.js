@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const users = require('./routes/users');
 const tvShows = require('./routes/tv-shows');
+const movies = require('./routes/movies');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(cors());
 
 app.use('/users', users);
 app.use('/tvshows', tvShows);
+app.use('/movies', movies);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

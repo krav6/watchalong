@@ -12,7 +12,7 @@ const jwt = require('jsonwebtoken');
 
 chai.use(chaiHttp);
 
-describe('Users Controller', () => {
+describe('Users', () => {
   beforeEach(done => {
     knex.migrate.rollback().then(() => {
       knex.migrate.latest().then(() => {
