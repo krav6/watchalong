@@ -34,7 +34,7 @@ const fetchMessages = async time => {
 const sendVote = async id => {
   // TODO: send to API route
   try {
-    const result = await axios.get('/');
+    await axios.get('/');
     return true;
   } catch (e) {
     // TODO: Error
@@ -48,12 +48,22 @@ export const fetchMediaInfo = (id, type) => {
     let result;
     try {
       result = await axios.get('/mediainfo');
+      if (result.data) {
+        dispatch(
+          initChat(
+            id,
+            result.data.name,
+            result.data.videoLength,
+            result.data.type
+          )
+        );
+      } else {
+        throw new Error('Invalid response');
+      }
     } catch (e) {
       // TODO: Set error
+      console.error(e);
     }
-    dispatch(
-      initChat(id, result.data.name, result.data.videoLength, result.data.type)
-    );
   };
 };
 
@@ -72,6 +82,7 @@ export const setVoted = id => {
       dispatch(vote(id));
     } else {
       // TODO: Set error?
+      console.error('Vote failed');
     }
   };
 };
@@ -79,6 +90,17 @@ export const setVoted = id => {
 export const sendMessage = (id, type, text, time) => {
   return async dispatch => {
     // TODO: send to API
-    dispatch(addMessages([{ id: Math.random() * 10, type: type, text, time }]));
+    dispatch(
+      addMessages([
+        {
+          id: Math.random() * 10,
+          type: type,
+          text,
+          time,
+          score: 0,
+          voted: false
+        }
+      ])
+    );
   };
 };
