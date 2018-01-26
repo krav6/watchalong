@@ -65,7 +65,7 @@ export class Chat extends React.Component {
     }
   };
 
-  insideInterval = time => {
+  isInsideInterval = time => {
     return +time >= +this.state.time - 10 && +time <= +this.state.time + 10;
   };
 
@@ -81,12 +81,12 @@ export class Chat extends React.Component {
                 "linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/poster.jpg') center center no-repeat"
             }}
           />
-          {this.props.isLoading ? (
+          {this.props.isLoading && (
             <div className="alert alert-info">Loading...</div>
-          ) : null}
+          )}
           <div>
             {this.props.messages.map((val, idx) => {
-              if (this.insideInterval(val.time)) {
+              if (this.isInsideInterval(val.time)) {
                 return (
                   <ChatMessage
                     id={val.id}

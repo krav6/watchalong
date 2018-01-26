@@ -11,7 +11,7 @@ const list = props => {
   let expand = null;
 
   if (props.items.length > 0) {
-    const posters = props.items.map((item, idx) => {
+    const posters = props.items.map(item => {
       return (
         <div className="col-4 col-md-3 col-xl-2" key={item.id}>
           <Poster id={item.id} title={item.title} type={props.type} />
