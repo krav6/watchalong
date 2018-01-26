@@ -23,20 +23,20 @@ export const setErrorMessage = errorMessage => ({
   }
 });
 
-export const tryLogin = (email, password) => {
+const setLoading = isLoading => ({
+  type: actionTypes.AUTH_SET_LOADING,
+  payload: {
+    isLoading
+  }
+});
+
+const tryAuth = (url, data) => {
   return async dispatch => {
-    dispatch(setErrorMessage(null));
+    dispatch(setLoading(true));
 
     try {
-      const result = await axios.post('users/login', {
-        email,
-        password
-      });
-      if (result.status === 200) {
-        return dispatch(setToken(result.data.token));
-      } else {
-        return dispatch(setErrorMessage(result.data.message));
-      }
+      const result = await axios.post(url, data);
+      return dispatch(setToken(result.data.token));
     } catch (err) {
       const errorMessage =
         (((err || {}).response || {}).data || {}).message ||
@@ -46,26 +46,10 @@ export const tryLogin = (email, password) => {
   };
 };
 
-export const tryRegister = (email, username, password) => {
-  return async dispatch => {
-    dispatch(setErrorMessage(null));
+export const tryLogin = (email, password) => {
+  return tryAuth('users/login', { email, password });
+};
 
-    try {
-      const result = await axios.post('users/register', {
-        email: email,
-        username: username,
-        password: password
-      });
-      if (result.status === 201) {
-        dispatch(setToken(result.data.token));
-      } else {
-        return dispatch(setErrorMessage(result.data.message));
-      }
-    } catch (err) {
-      const errorMessage =
-        (((err || {}).response || {}).data || {}).message ||
-        'A network error has occured';
-      return dispatch(setErrorMessage(errorMessage));
-    }
-  };
+export const tryRegister = (email, username, password) => {
+  return tryAuth('users/register', { email, username, password });
 };

@@ -1,12 +1,7 @@
 import * as actionTypes from '../actions/actionTypes';
-import reducer from './auth';
+import reducer, { initialState } from './auth';
 
 describe('auth reducer', () => {
-  const initialState = {
-    token: null,
-    errorMessage: null
-  };
-
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
@@ -14,25 +9,50 @@ describe('auth reducer', () => {
   it('should set error message', () => {
     const errorMessage = 'Error message';
     expect(
-      reducer(initialState, {
-        type: actionTypes.AUTH_SET_ERROR,
-        payload: { errorMessage: errorMessage }
-      })
+      reducer(
+        { ...initialState, isLoading: true },
+        {
+          type: actionTypes.AUTH_SET_ERROR,
+          payload: { errorMessage: errorMessage }
+        }
+      )
     ).toEqual({
       ...initialState,
-      errorMessage: errorMessage
+      errorMessage: errorMessage,
+      isLoading: false
+    });
+  });
+
+  it('should set loading', () => {
+    const isLoading = true;
+    expect(
+      reducer(
+        { ...initialState, errorMessage: 'Error' },
+        {
+          type: actionTypes.AUTH_SET_LOADING,
+          payload: { isLoading }
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      errorMessage: null,
+      isLoading
     });
   });
 
   it('should set token', () => {
     const token = 'Token';
     expect(
-      reducer(initialState, {
-        type: actionTypes.AUTH_SET_TOKEN,
-        payload: { token: token }
-      })
+      reducer(
+        { ...initialState, isLoading: true },
+        {
+          type: actionTypes.AUTH_SET_TOKEN,
+          payload: { token: token }
+        }
+      )
     ).toEqual({
       ...initialState,
+      isLoading: false,
       token: token
     });
   });

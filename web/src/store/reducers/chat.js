@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
         type: action.payload.type
       };
 
-    case actionTypes.CHAT_LOADING:
+    case actionTypes.CHAT_SET_LOADING:
       return {
         ...state,
         isLoading: action.payload.isLoading

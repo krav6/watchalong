@@ -57,6 +57,7 @@ export class Register extends React.Component {
                 name="email"
                 required
                 onChange={this.handleChange}
+                disabled={this.props.isLoading}
               />
             </div>
           </div>
@@ -74,6 +75,7 @@ export class Register extends React.Component {
                 required
                 minLength="4"
                 onChange={this.handleChange}
+                disabled={this.props.isLoading}
               />
               <small className="form-text text-muted">
                 Username must be at least 4 characters long.
@@ -94,6 +96,7 @@ export class Register extends React.Component {
                 required
                 minLength="6"
                 onChange={this.handleChange}
+                disabled={this.props.isLoading}
               />
               <small className="form-text text-muted">
                 Password must be at least 6 characters long.
@@ -117,11 +120,16 @@ export class Register extends React.Component {
                 required
                 minLength="6"
                 onChange={this.handleChange}
+                disabled={this.props.isLoading}
               />
             </div>
           </div>
-          <button type="submit" className="btn btn-primary btn-block">
-            Register
+          <button
+            type="submit"
+            className="btn btn-primary btn-block"
+            disabled={this.props.isLoading}
+          >
+            {this.props.isLoading ? 'Loading' : 'Register'}
           </button>
           <AlertDanger message={this.props.errorMessage} />
         </form>
@@ -131,7 +139,8 @@ export class Register extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  errorMessage: state.auth.errorMessage
+  errorMessage: state.auth.errorMessage,
+  isLoading: state.auth.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({

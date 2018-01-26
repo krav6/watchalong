@@ -48,6 +48,7 @@ export class Login extends React.Component {
                 value={this.state.email}
                 onChange={this.handleChange}
                 required
+                disabled={this.props.isLoading}
               />
             </div>
           </div>
@@ -66,11 +67,16 @@ export class Login extends React.Component {
                 onChange={this.handleChange}
                 required
                 minLength="6"
+                disabled={this.props.isLoading}
               />
             </div>
           </div>
-          <button type="submit" className="btn btn-primary btn-block">
-            Login
+          <button
+            type="submit"
+            className="btn btn-primary btn-block"
+            disabled={this.props.isLoading}
+          >
+            {this.props.isLoading ? 'Loading' : 'Login'}
           </button>
           <AlertDanger message={this.props.errorMessage} />
         </form>
@@ -80,7 +86,8 @@ export class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  errorMessage: state.auth.errorMessage
+  errorMessage: state.auth.errorMessage,
+  isLoading: state.auth.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({

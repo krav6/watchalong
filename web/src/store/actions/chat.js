@@ -7,7 +7,7 @@ const initChat = (id, name, videoLength, type) => ({
 });
 
 export const load = isLoading => ({
-  type: actionTypes.CHAT_LOADING,
+  type: actionTypes.CHAT_SET_LOADING,
   payload: { isLoading }
 });
 

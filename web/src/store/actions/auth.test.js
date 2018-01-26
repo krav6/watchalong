@@ -32,6 +32,19 @@ describe('auth actions', () => {
     expect(localStorage.getItem('token')).toEqual(token);
   });
 
+  it('should clear token', async () => {
+    const token = null;
+    const expectedActions = [
+      { type: actionTypes.AUTH_SET_TOKEN, payload: { token } }
+    ];
+
+    const store = mockStore({});
+
+    await store.dispatch(actions.setToken(token));
+    expect(store.getActions()).toEqual(expectedActions);
+    expect(localStorage.getItem('token')).toEqual(token);
+  });
+
   it('should set error message', async () => {
     const errorMessage = 'error';
     const expectedActions = [
@@ -48,7 +61,7 @@ describe('auth actions', () => {
     const password = 'password12';
     const token = 'token';
     const expectedActions = [
-      { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
+      { type: actionTypes.AUTH_SET_LOADING, payload: { isLoading: true } },
       {
         type: actionTypes.AUTH_SET_TOKEN,
         payload: { token }
@@ -76,7 +89,7 @@ describe('auth actions', () => {
     const password = 'password123';
     const errorMessage = 'Invalid login credentials';
     const expectedActions = [
-      { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
+      { type: actionTypes.AUTH_SET_LOADING, payload: { isLoading: true } },
       {
         type: actionTypes.AUTH_SET_ERROR,
         payload: { errorMessage }
@@ -100,7 +113,7 @@ describe('auth actions', () => {
     const password = 'password12';
     const token = 'token';
     const expectedActions = [
-      { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
+      { type: actionTypes.AUTH_SET_LOADING, payload: { isLoading: true } },
       {
         type: actionTypes.AUTH_SET_TOKEN,
         payload: { token }
@@ -125,7 +138,7 @@ describe('auth actions', () => {
     const password = 'password12';
     const errorMessage = 'Registration failed';
     const expectedActions = [
-      { type: actionTypes.AUTH_SET_ERROR, payload: { errorMessage: null } },
+      { type: actionTypes.AUTH_SET_LOADING, payload: { isLoading: true } },
       {
         type: actionTypes.AUTH_SET_ERROR,
         payload: { errorMessage }

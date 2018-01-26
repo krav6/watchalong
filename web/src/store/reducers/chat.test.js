@@ -28,7 +28,7 @@ describe('chat reducer', () => {
   it('should set loading state to true', () => {
     expect(
       reducer(initialState, {
-        type: actionTypes.CHAT_LOADING,
+        type: actionTypes.CHAT_SET_LOADING,
         payload: { isLoading: true }
       })
     ).toEqual({ ...initialState, isLoading: true });
@@ -37,7 +37,7 @@ describe('chat reducer', () => {
   it('should set loading state to false', () => {
     expect(
       reducer(initialState, {
-        type: actionTypes.CHAT_LOADING,
+        type: actionTypes.CHAT_SET_LOADING,
         payload: { isLoading: false }
       })
     ).toEqual({ ...initialState, isLoading: false });

@@ -1,8 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
 
-const initialState = {
-  token: null,
-  errorMessage: null
+export const initialState = {
+  errorMessage: null,
+  isLoading: false,
+  token: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -10,14 +11,23 @@ const reducer = (state = initialState, action) => {
     case actionTypes.AUTH_SET_ERROR:
       return {
         ...state,
-        errorMessage: action.payload.errorMessage
+        errorMessage: action.payload.errorMessage,
+        isLoading: false
+      };
+
+    case actionTypes.AUTH_SET_LOADING:
+      return {
+        ...state,
+        errorMessage: null,
+        isLoading: action.payload.isLoading
       };
 
     case actionTypes.AUTH_SET_TOKEN:
       return {
         ...state,
-        token: action.payload.token,
-        errorMessage: null
+        errorMessage: null,
+        isLoading: false,
+        token: action.payload.token
       };
 
     default:

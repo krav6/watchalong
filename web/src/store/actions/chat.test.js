@@ -46,9 +46,9 @@ describe('chat actions', () => {
     const type = 'movie';
     const messages = [{ id: 1 }];
     const expectedActions = [
-      { type: actionTypes.CHAT_LOADING, payload: { isLoading: true } },
+      { type: actionTypes.CHAT_SET_LOADING, payload: { isLoading: true } },
       { type: actionTypes.CHAT_ADD_MESSAGES, payload: { messages } },
-      { type: actionTypes.CHAT_LOADING, payload: { isLoading: false } }
+      { type: actionTypes.CHAT_SET_LOADING, payload: { isLoading: false } }
     ];
 
     moxios.wait(() => {
