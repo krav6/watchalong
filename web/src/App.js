@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode';
 import './App.css';
 import * as authActions from 'store/actions/auth';
 import PrivateRoute from 'components/Routes/PrivateRoute';
-import Container from 'components/Container/Container';
+import NotFound from 'components/Errors/NotFound';
 import Nav from 'containers/Nav/Nav';
 import Footer from 'components/Footer/Footer';
 import Login from 'containers/Auth/Login';
@@ -17,7 +17,7 @@ import Movie from 'containers/Movie/Movie';
 import TvShow from 'containers/TvShow/TvShow';
 import Chat from 'containers/Chat/Chat';
 
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -71,14 +71,7 @@ class App extends React.Component {
 
             <Route path="/" exact component={Home} />
 
-            <Route
-              render={() => (
-                <Container small>
-                  <h1>Page not found</h1>
-                  <p>The requested page could not be found.</p>
-                </Container>
-              )}
-            />
+            <Route component={NotFound} name="NotFound" />
           </Switch>
         </section>
 
