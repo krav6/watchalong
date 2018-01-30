@@ -3,7 +3,7 @@ const router = express.Router();
 const tvshowsController = require('../controllers/tv-shows');
 
 router.get('/thetvdb/series/:id', tvshowsController.getSeriesByIdFromTvDb);
-router.get('/thetvdb/episode', tvshowsController.getEpisodeByIdFromTvDb);
+router.get('/thetvdb/episode/:id', tvshowsController.getEpisodeByIdFromTvDb);
 router.get(
   '/thetvdb/series/:id/episodes',
   tvshowsController.getEpisodesBySeriesFromTvDb
