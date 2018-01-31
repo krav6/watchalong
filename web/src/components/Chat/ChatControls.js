@@ -1,24 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faPlay, faPause } from '@fortawesome/fontawesome-free-solid';
 
 const chatControls = props => (
-  <React.Fragment>
-    <div className="d-flex">
-      <button className="btn btn-primary mr-3" onClick={props.togglePlay}>
-        {props.isPlaying ? 'Pause' : 'Play'}
-      </button>
-      <span className="align-self-center">{props.displayTime}</span>
-    </div>
+  <div className="d-flex">
+    <button className="btn btn-primary mr-3" onClick={props.togglePlay}>
+      {props.isPlaying ? (
+        <FontAwesomeIcon icon={faPause} fixedWidth />
+      ) : (
+        <FontAwesomeIcon icon={faPlay} fixedWidth />
+      )}
+    </button>
+    <p className="align-self-center mb-0 mr-3">{props.displayTime}</p>
     <input
       type="range"
-      className="w-100 my-3"
+      className="w-100 my-3 mr-3"
       name="time"
       value={props.time}
       min="0"
       max={props.videoLength}
       onChange={props.onFormChange}
     />
-  </React.Fragment>
+  </div>
 );
 
 chatControls.propTypes = {

@@ -71,16 +71,16 @@ export class Chat extends React.Component {
 
   render() {
     return (
-      <div className="chat-main">
+      <div className="chat-main position-relative">
+        <div
+          className="chat-backdrop"
+          style={{
+            background:
+              "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)), url('/poster.jpg') top center no-repeat"
+          }}
+        />
         <h3 className="chat-header bg-primary p-3 mb-0">{this.props.name}</h3>
         <div className="chat-area">
-          <div
-            className="chat-backdrop"
-            style={{
-              background:
-                "linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/poster.jpg') center center no-repeat"
-            }}
-          />
           {this.props.isLoading && (
             <div className="alert alert-info">Loading...</div>
           )}
@@ -106,7 +106,7 @@ export class Chat extends React.Component {
             })}
           </div>
         </div>
-        <div className="chat-controls shadow border-top border-secondary">
+        <div className="chat-controls shadow">
           <ChatControls
             displayTime={this.getTime()}
             isPlaying={this.state.isPlaying}

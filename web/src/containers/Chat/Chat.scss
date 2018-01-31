@@ -1,4 +1,5 @@
 .chat-main {
+  background: #000;
   display: grid;
   grid-template-areas:
     'chat-header'
@@ -7,16 +8,19 @@
   grid-template-columns: auto;
   grid-template-rows: auto 1fr auto;
   height: calc(100vh - 60px);
+  position: relative;
 }
 
 .chat-header {
   grid-area: chat-header;
+  z-index: 1;
 }
 
 .chat-area {
   grid-area: chat-area;
   overflow: hidden;
   position: relative;
+  z-index: 1;
 }
 
 .chat-message {
@@ -32,6 +36,7 @@
   transition: left 1000ms linear, top 300ms ease-out;
   transform: translateX(-50%);
   white-space: nowrap;
+  z-index: 1;
 }
 
 .chat-message:focus {
@@ -61,15 +66,18 @@
   }
 }
 
-.chat-control {
+.chat-controls {
   grid-area: chat-controls;
+  z-index: 1;
 }
 
 .chat-backdrop {
-  background-size: auto cover;
+  animation: fade-in 500ms ease-out;
+  background-size: auto auto, cover;
   height: 100%;
   left: 0;
   position: absolute;
   top: 0;
   width: 100%;
+  z-index: 0;
 }
