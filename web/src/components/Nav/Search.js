@@ -22,7 +22,7 @@ const search = () => (
         <option value="2">TV Shows</option>
       </select>
       <div className="input-group-append">
-        <button className="btn btn-link" type="button">
+        <button className="btn btn-link" type="submit">
           <FontAwesomeIcon icon={faSearch} fixedWidth />
         </button>
       </div>

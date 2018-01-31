@@ -75,8 +75,8 @@ export class Chat extends React.Component {
         <div
           className="chat-backdrop"
           style={{
-            background:
-              "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)), url('/poster.jpg') top center no-repeat"
+            backgroundImage:
+              "linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)), url('/poster.jpg')"
           }}
         />
         <h3 className="chat-header bg-primary p-3 mb-0">{this.props.name}</h3>

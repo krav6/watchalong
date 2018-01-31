@@ -14,8 +14,8 @@ class Movie extends React.Component {
           <div
             className="fanart"
             style={{
-              background:
-                "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)), url('/poster.jpg') top center no-repeat"
+              backgroundImage:
+                "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5)), url('/poster.jpg')"
             }}
           />
         </div>
