@@ -6,55 +6,76 @@ let token;
 let loginGuard = false;
 
 const login = async () => {
-  debug(`Sending login request to thetvdb`);
-  const res = await request({
-    method: 'POST',
-    uri: `${baseUrl}login`,
-    body: {
-      apikey: process.env.THETVDB_API_KEY
-    },
-    json: true
-  });
+  try {
+    const res = await request({
+      method: 'POST',
+      uri: `${baseUrl}login`,
+      body: {
+        apikey: process.env.THETVDB_API_KEY
+      },
+      json: true
+    });
 
-  debug(`Received token from thetvdb: ${res.token}`);
-  token = res.token;
-  return token;
+    token = res.token;
+    return token;
+  } catch (error) {
+    return Promise.reject({
+      status: 500,
+      message: 'An error occured while requesting token from TheTVDb.'
+    });
+  }
 };
 
 const getToken = () => {
   if (typeof token == 'undefined') {
     return login();
   }
-  debug(`thetvdb token is: ${token}`);
+
   return token;
+};
+const createRequestData = (destination, bearerToken, query) => {
+  const requestData = {
+    method: 'GET',
+    uri: `${baseUrl}${destination}`,
+    headers: { Authorization: `Bearer ${bearerToken}` }
+  };
+
+  if (typeof query != 'undefined') {
+    Object.assign(requestData, {
+      qs: query
+    });
+  }
+
+  return requestData;
+};
+
+const handleRequestError = async (error, dest, query) => {
+  if (error.statusCode === 401 && !loginGuard) {
+    loginGuard = true;
+    await login();
+    return sendRequest(dest, query);
+  } else if (error.statusCode === 404) {
+    return Promise.reject({
+      status: 404,
+      message: 'Requested resource is not found in the TheTvDb.'
+    });
+  } else {
+    return Promise.reject({
+      status: 500,
+      message: 'An error occured while sending request to TheTVDb.'
+    });
+  }
 };
 
 const sendRequest = async (dest, query) => {
+  const bearerToken = await getToken();
+
   try {
-    const bearerToken = await getToken();
-
-    const requestData = {
-      method: 'GET',
-      uri: `${baseUrl}${dest}`,
-      headers: { Authorization: `Bearer ${bearerToken}` }
-    };
-
-    if (typeof query != 'undefined') {
-      Object.assign(requestData, {
-        qs: query
-      });
-    }
+    const requestData = createRequestData(dest, bearerToken, query);
 
     return await request(requestData);
   } catch (error) {
-    if (error.statusCode === 401 && !loginGuard) {
-      loginGuard = true;
-      await login();
-      return sendRequest(dest, query);
-    } else {
-      loginGuard = false;
-      return Promise.reject(error);
-    }
+    return handleRequestError(error, dest, query);
   }
 };
 

@@ -8,16 +8,16 @@ exports.getSeriesByIdFromTvDb = async (req, res) => {
     const result = await thetvdbController.getSeriesById(req.params.id);
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
 exports.getEpisodeByIdFromTvDb = async (req, res) => {
   try {
-    const result = await thetvdbController.getEpisodeById(req.query.id);
+    const result = await thetvdbController.getEpisodeById(req.params.id);
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
@@ -26,7 +26,7 @@ exports.getEpisodesBySeriesFromTvDb = async (req, res) => {
     const result = await thetvdbController.getEpisodesBySeries(req.params.id);
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
@@ -35,7 +35,7 @@ exports.searchSeriesFromTvDb = async (req, res) => {
     const result = await thetvdbController.searchSeries(req.query);
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
@@ -44,7 +44,7 @@ exports.getSeriesImagesByIdFromTvDb = async (req, res) => {
     const result = await thetvdbController.getSeriesImagesById(req.params.id);
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
@@ -53,7 +53,7 @@ exports.getSeriesPostersByIdFromTvDb = async (req, res) => {
     const result = await thetvdbController.getSeriesPostersById(req.params.id);
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
 
@@ -64,7 +64,37 @@ exports.getSeriesSeasonPostersByIdFromTvDb = async (req, res) => {
     );
     return res.status(200).json(JSON.parse(result));
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
+  }
+};
+
+const isSeriesAlreadyExists = async id => {
+  try {
+    const isShowExists = await tvShowModel.exists(id);
+    return isShowExists;
+  } catch (error) {
+    return Promise.reject({
+      status: 500,
+      message: 'An error occured while fetching series data from the database.'
+    });
+  }
+};
+
+const checkInsertSeriesRequest = async id => {
+  const isSeriesIdMissing = 'undefined' == typeof id || 0 == id.length;
+  if (isSeriesIdMissing) {
+    return Promise.reject({
+      status: 403,
+      message: 'Missing field: id'
+    });
+  }
+
+  const isSeriesExists = await isSeriesAlreadyExists(id);
+  if (isSeriesExists) {
+    return Promise.reject({
+      status: 403,
+      message: `Series with the id of ${id} is already stored in the database.`
+    });
   }
 };
 
@@ -78,28 +108,43 @@ const calculateNumberOfSeasons = episodes => {
 };
 
 const insertSeries = async (seriesId, seriesData, numberOfSeasons) => {
-  return await tvShowModel.insert(
-    seriesId,
-    seriesData.seriesName,
-    seriesData.firstAired.length == 0 ? null : seriesData.firstAired,
-    seriesData.overview,
-    seriesData.runtime,
-    numberOfSeasons
-  );
+  try {
+    return await tvShowModel.insert(
+      seriesId,
+      seriesData.seriesName,
+      seriesData.firstAired.length == 0 ? null : seriesData.firstAired,
+      seriesData.overview,
+      seriesData.runtime,
+      numberOfSeasons
+    );
+  } catch (error) {
+    return Promise.reject({
+      status: 500,
+      message: 'An error occured while inserting series data from the database.'
+    });
+  }
 };
 
 const insertEpisodes = async (seriesId, episodeData) => {
-  for (let index = 0; index < episodeData.length; index++) {
-    await episodeModel.insert(
-      seriesId,
-      episodeData[index].airedSeason,
-      episodeData[index].airedEpisodeNumber,
-      episodeData[index].episodeName,
-      episodeData[index].firstAired.length == 0
-        ? null
-        : episodeData[index].firstAired,
-      episodeData[index].overview
-    );
+  try {
+    for (let index = 0; index < episodeData.length; index++) {
+      await episodeModel.insert(
+        seriesId,
+        episodeData[index].airedSeason,
+        episodeData[index].airedEpisodeNumber,
+        episodeData[index].episodeName,
+        episodeData[index].firstAired.length == 0
+          ? null
+          : episodeData[index].firstAired,
+        episodeData[index].overview
+      );
+    }
+  } catch (error) {
+    return Promise.reject({
+      status: 500,
+      message:
+        'An error occured while inserting episode data from the database.'
+    });
   }
 };
 
@@ -113,13 +158,7 @@ const getParsedEpisodes = async seriesId => {
 
 exports.insertSeriesById = async (req, res) => {
   try {
-    if (await tvShowModel.exists(req.body.id)) {
-      return res.status(503).json({
-        message: `Series with the id of ${
-          req.body.id
-        } is already stored in the databese.`
-      });
-    }
+    await checkInsertSeriesRequest(req.body.id);
 
     const series = await getParsedSeries(req.body.id);
     const episodes = await getParsedEpisodes(req.body.id);
@@ -136,6 +175,6 @@ exports.insertSeriesById = async (req, res) => {
 
     return res.status(201).json({ showId: tvShowId[0] });
   } catch (error) {
-    res.sendStatus(503);
+    return res.status(error.status).json({ message: error.message });
   }
 };
