@@ -1,13 +1,19 @@
 .poster {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
   overflow: hidden;
-  padding-bottom: 150%;
   position: relative;
 }
 
-.poster:after {
+.poster-cover {
+  height: 240px;
+  width: 160px;
+}
+
+.poster-episode {
+  height: 225px;
+  width: 400px;
+}
+
+a .poster:after {
   content: '';
   height: 100%;
   left: 0;
@@ -19,7 +25,7 @@
   z-index: 1;
 }
 
-.poster:hover:after {
+a .poster:hover:after {
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.5) inset;
 }
 
@@ -32,7 +38,7 @@
   transition: transform 300ms ease-out;
 }
 
-.poster:hover .poster-img {
+a .poster:hover .poster-img {
   transform: translateX(-50%) scale(1.05);
 }
 

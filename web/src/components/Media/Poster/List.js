@@ -14,7 +14,9 @@ const list = props => {
     const posters = props.items.map(item => {
       return (
         <div className="col-4 col-md-3 col-xl-2" key={item.id}>
-          <Poster id={item.id} title={item.title} type={props.type} />
+          <Link to={props.type + '/' + item.id}>
+            <Poster id={item.id} title={item.title} type={props.type} />
+          </Link>
         </div>
       );
     });

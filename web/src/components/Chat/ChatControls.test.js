@@ -22,7 +22,12 @@ describe('<ChatControls />', () => {
     );
 
     expect(comp).toBeTruthy();
-    expect(comp.find('.btn').text()).toBe('Play');
+    expect(
+      comp
+        .find('button.btn')
+        .childAt(0)
+        .props().icon.iconName
+    ).toBe('play');
     expect(togglePlay).toHaveBeenCalledTimes(0);
     comp.find('.btn').simulate('click');
     expect(togglePlay).toHaveBeenCalledTimes(1);
@@ -53,6 +58,11 @@ describe('<ChatControls />', () => {
     );
 
     expect(comp).toBeTruthy();
-    expect(comp.find('.btn').text()).toBe('Pause');
+    expect(
+      comp
+        .find('button.btn')
+        .childAt(0)
+        .props().icon.iconName
+    ).toBe('pause');
   });
 });
