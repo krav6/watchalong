@@ -5,7 +5,6 @@ const should = chai.should();
 const chaiHttp = require('chai-http');
 const server = require('../../app');
 const knex = require('../../db/knex');
-const expect = chai.expect;
 const jwt = require('jsonwebtoken');
 const userModel = require('../../models/user');
 const bcrypt = require('bcrypt');
