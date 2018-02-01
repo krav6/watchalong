@@ -7,10 +7,7 @@ describe('<List />', () => {
     const name = 'List name';
     const items = [];
     const link = '/link';
-    const type = 'movie';
-    const comp = shallow(
-      <List name={name} items={items} link={link} type={type} />
-    );
+    const comp = shallow(<List name={name} items={items} link={link} />);
 
     expect(comp).toBeTruthy();
     expect(comp.find('h2').text()).toBe(name);
@@ -18,23 +15,26 @@ describe('<List />', () => {
     expect(comp.find('poster').length).toBe(0);
   });
 
+  it('should not display name and link', () => {
+    const items = [];
+    const comp = shallow(<List items={items} />);
+
+    expect(comp).toBeTruthy();
+    expect(comp.find('h2').length).toBe(0);
+    expect(comp.find('.alert').length).toBe(1);
+    expect(comp.find('poster').length).toBe(0);
+    expect(comp.find('Link').length).toBe(0);
+  });
+
   it('renders items', () => {
     const name = 'List name';
-    const items = [
-      {
-        id: 0,
-        title: 'First element'
-      },
-      {
-        id: 1,
-        title: 'Second element'
-      }
-    ];
     const link = '/link';
-    const type = 'tv-show';
-    const comp = shallow(
-      <List name={name} items={items} link={link} type={type} />
-    );
+    const type = ['movie', 'tv-show'];
+    const items = [
+      { id: 0, title: 'First element', type: type[0] },
+      { id: 1, title: 'Second element', type: type[1] }
+    ];
+    const comp = shallow(<List name={name} items={items} link={link} />);
 
     expect(comp).toBeTruthy();
     expect(comp.find('h2').text()).toBe(name);
@@ -44,7 +44,7 @@ describe('<List />', () => {
     comp.find('poster').forEach((element, idx) => {
       expect(element.props().id).toBe(items[idx].id);
       expect(element.props().title).toBe(items[idx].title);
-      expect(element.props().type).toBe(type);
+      expect(element.props().type).toBe(type[idx]);
     });
   });
 });

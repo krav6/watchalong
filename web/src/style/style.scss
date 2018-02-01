@@ -42,7 +42,6 @@ input:invalid {
 
 .fanart-container {
   animation: shrink 800ms ease-out forwards;
-  background-size: auto auto, cover;
   overflow: hidden;
   position: relative;
 }
@@ -50,6 +49,7 @@ input:invalid {
 .fanart {
   animation: blur-in 800ms ease-out;
   background-size: auto auto, cover;
+  background-position: top;
   height: 100%;
 }
 

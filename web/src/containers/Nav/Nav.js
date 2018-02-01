@@ -54,7 +54,7 @@ export class Nav extends React.Component {
         </button>
 
         <div className="navbar-search mx-auto">
-          <Search />
+          <Search history={this.props.history} />
         </div>
 
         <div

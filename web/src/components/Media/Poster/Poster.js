@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './Poster.css';
 
 const poster = props => {
-  const postClasses = ['poster', 'bg-dark', 'shadow-sm'];
+  const postClasses = ['poster', 'bg-dark', 'shadow-sm', 'mb-3'];
   if (props.type === 'episode') {
     postClasses.push('poster-episode');
   } else {

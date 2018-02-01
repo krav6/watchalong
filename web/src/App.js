@@ -16,6 +16,7 @@ import Home from 'containers/Home/Home';
 import Movie from 'containers/Movie/Movie';
 import TvShow from 'containers/TvShow/TvShow';
 import Chat from 'containers/Chat/Chat';
+import Search from 'containers/Search/Search';
 
 export class App extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export class App extends React.Component {
   render() {
     return (
       <div className="app">
-        <Nav />
+        <Nav history={this.props.history} />
 
         <section className="app-main">
           <Switch>
@@ -68,6 +69,8 @@ export class App extends React.Component {
             <Route path="/movie/:id" component={Movie} />
 
             <Route path="/tv-show/:id" component={TvShow} />
+
+            <Route path="/search/:type/:title" component={Search} />
 
             <Route path="/" exact component={Home} />
 
