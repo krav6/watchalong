@@ -16,14 +16,18 @@ describe('<List />', () => {
   });
 
   it('should not display name and link', () => {
-    const items = [];
-    const comp = shallow(<List items={items} />);
+    const type = ['tv-show', 'movie'];
+    const items = [
+      { id: 0, title: 'First element', type: type[0] },
+      { id: 1, title: 'Second element', type: type[1] }
+    ];
+    const comp = shallow(<List items={items} oneLine />);
 
     expect(comp).toBeTruthy();
     expect(comp.find('h2').length).toBe(0);
-    expect(comp.find('.alert').length).toBe(1);
-    expect(comp.find('poster').length).toBe(0);
-    expect(comp.find('Link').length).toBe(0);
+    expect(comp.find('poster').length).toBe(2);
+    expect(comp.find('Link').length).toBe(2);
+    expect(comp.find('.row.flex-nowrap.hide-x').length).toBe(1);
   });
 
   it('renders items', () => {
@@ -46,5 +50,7 @@ describe('<List />', () => {
       expect(element.props().title).toBe(items[idx].title);
       expect(element.props().type).toBe(type[idx]);
     });
+    expect(comp.find('.row').length).toBe(1);
+    expect(comp.find('.row.flex-nowrap.hide-x').length).toBe(0);
   });
 });
