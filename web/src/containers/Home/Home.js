@@ -10,23 +10,23 @@ class Home extends React.Component {
         <h1>Home</h1>
         <PosterList
           name="Popular"
-          items={[{ id: 0, title: 'Title 1' }]}
+          items={[{ id: 0, title: 'Title 1', type: 'movie' }]}
           link="popular"
-          type="movie"
+          oneLine
         />
         <PosterList
           name="List name with many elements"
           items={[
-            { id: 0, title: 'Title 1' },
-            { id: 1, title: 'Title 2 which has a long name' },
-            { id: 2, title: 'Title 3' },
-            { id: 3, title: 'Title 4' },
-            { id: 4, title: 'Title 5' },
-            { id: 5, title: 'Title 6' },
-            { id: 6, title: 'Title 7' }
+            { id: 0, title: 'Title 1', type: 'movie' },
+            { id: 1, title: 'Title 2 which has a long name', type: 'tv show' },
+            { id: 2, title: 'Title 3', type: 'movie' },
+            { id: 3, title: 'Title 4', type: 'tv show' },
+            { id: 4, title: 'Title 5', type: 'movie' },
+            { id: 5, title: 'Title 6', type: 'movie' },
+            { id: 6, title: 'Title 7', type: 'movie' }
           ]}
           link="list"
-          type="tv-show"
+          oneLine
         />
         <PosterList name="Empty one" items={[]} link="list" type="movie" />
       </Container>
