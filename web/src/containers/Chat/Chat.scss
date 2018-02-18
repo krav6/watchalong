@@ -74,6 +74,7 @@
 .chat-backdrop {
   animation: fade-in 300ms ease-out;
   background-size: auto auto, cover;
+  background-position: top center;
   height: 100%;
   left: 0;
   position: absolute;
